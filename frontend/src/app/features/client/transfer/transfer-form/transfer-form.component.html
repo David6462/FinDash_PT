@@ -1,0 +1,101 @@
+<section class="transfer">
+  <h1 class="title">Transferir dinero</h1>
+  <p class="subtitle">El monto se debita de tu cuenta más la comisión según tu nivel.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="card">
+    <label class="field">
+      <span class="field__label">Cuenta destino</span>
+      <input
+        type="text"
+        formControlName="destinationAccountNumber"
+        placeholder="AC-PREMIUM-0001"
+        autocomplete="off"
+        class="field__input"
+        [class.field__input--error]="
+          form.controls.destinationAccountNumber.touched &&
+          form.controls.destinationAccountNumber.invalid
+        "
+      />
+      @if (
+        form.controls.destinationAccountNumber.touched &&
+        form.controls.destinationAccountNumber.hasError('required')
+      ) {
+        <span class="field__hint">Ingresá el número de cuenta destino.</span>
+      }
+    </label>
+
+    <label class="field">
+      <span class="field__label">Monto</span>
+      <input
+        type="number"
+        step="0.01"
+        min="0.01"
+        formControlName="amount"
+        placeholder="0.00"
+        class="field__input"
+        [class.field__input--error]="
+          form.controls.amount.touched && form.controls.amount.invalid
+        "
+      />
+      @if (form.controls.amount.touched && form.controls.amount.hasError('required')) {
+        <span class="field__hint">Ingresá un monto.</span>
+      } @else if (
+        form.controls.amount.touched && form.controls.amount.hasError('min')
+      ) {
+        <span class="field__hint">El monto mínimo es 0.01.</span>
+      } @else if (
+        form.controls.amount.touched && form.controls.amount.hasError('maxTwoDecimals')
+      ) {
+        <span class="field__hint">Máximo 2 decimales.</span>
+      }
+    </label>
+
+    <button
+      type="submit"
+      class="submit"
+      [disabled]="store.loading() || form.invalid"
+    >
+      {{ store.loading() ? 'Procesando…' : 'Transferir' }}
+    </button>
+
+    @if (store.loading()) {
+      <p class="processing" role="status">
+        Procesando… esto puede tardar unos segundos mientras se ejecuta la
+        verificación antifraude.
+      </p>
+    }
+  </form>
+
+  @if (store.error(); as message) {
+    <div class="alert alert--error" role="alert">
+      <strong>No se pudo transferir</strong>
+      <span>{{ message }}</span>
+    </div>
+  }
+
+  @if (store.lastResult(); as tx) {
+    <div class="receipt" role="status">
+      <p class="receipt__status">Transferencia completada</p>
+
+      <dl class="receipt__grid">
+        <div>
+          <dt>Monto transferido</dt>
+          <dd>{{ tx.amount | number: '1.2-2' }}</dd>
+        </div>
+        <div>
+          <dt>Comisión cobrada</dt>
+          <dd>{{ tx.commissionCharged | number: '1.2-2' }}</dd>
+        </div>
+        <div>
+          <dt>Total debitado</dt>
+          <dd class="receipt__total">{{ tx.totalDebited | number: '1.2-2' }}</dd>
+        </div>
+      </dl>
+
+      <div class="receipt__auth">
+        <span class="receipt__auth-label">Código de autorización</span>
+        <span class="receipt__auth-code">{{ tx.authorizationCode }}</span>
+      </div>
+    </div>
+  }
+</section>

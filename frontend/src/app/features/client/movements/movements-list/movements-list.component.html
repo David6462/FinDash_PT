@@ -1,0 +1,64 @@
+<section class="movements">
+  <h1 class="title">Mis movimientos</h1>
+
+  @if (store.loading()) {
+    <p class="state" role="status">Cargando movimientos…</p>
+  } @else if (store.error()) {
+    <div class="alert alert--error" role="alert">{{ store.error() }}</div>
+  } @else if (store.movements().length === 0) {
+    <p class="state">Todavía no tenés movimientos.</p>
+  } @else {
+    <ul class="list">
+      @for (tx of store.movements(); track tx.id) {
+        <li class="item">
+          <div class="item__main">
+            <div class="item__left">
+              @switch (direction(tx)) {
+                @case ('out') {
+                  <span class="dir dir--out">↑ Enviado</span>
+                }
+                @case ('in') {
+                  <span class="dir dir--in">↓ Recibido</span>
+                }
+                @default {
+                  <span class="dir dir--unknown">Movimiento</span>
+                }
+              }
+              <span class="item__party">{{ counterparty(tx) }}</span>
+              <span class="item__date">{{ tx.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+
+            <div class="item__right">
+              <span
+                class="amount"
+                [class.amount--out]="direction(tx) === 'out'"
+                [class.amount--in]="direction(tx) === 'in'"
+              >
+                {{ direction(tx) === 'out' ? '−' : direction(tx) === 'in' ? '+' : '' }}{{ tx.amount | number: '1.2-2' }}
+              </span>
+              <span class="item__fee">Comisión {{ tx.commissionCharged | number: '1.2-2' }}</span>
+            </div>
+          </div>
+
+          <div class="item__meta">
+            @if (tx.status === 'COMPLETED') {
+              <span class="badge badge--ok">Completada</span>
+            } @else {
+              <span class="badge badge--rejected">Rechazada</span>
+            }
+
+            @if (tx.status === 'REJECTED' && tx.rejectionReason) {
+              <span class="reason">{{ tx.rejectionReason }}</span>
+            }
+
+            @if (tx.authorizationCode) {
+              <span class="auth">Auth: <code>{{ tx.authorizationCode }}</code></span>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+
+    <app-pagination [meta]="store.meta()" (pageChange)="load($event)" />
+  }
+</section>

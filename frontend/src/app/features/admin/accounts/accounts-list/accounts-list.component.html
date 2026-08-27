@@ -1,0 +1,90 @@
+<section class="accounts">
+  <h1 class="title">Cuentas</h1>
+
+  <div class="filters">
+    <label class="filters__field">
+      <span class="filters__label">Documento del titular</span>
+      <input
+        type="text"
+        [formControl]="documentNumberControl"
+        placeholder="CC-CLIENT-001"
+        autocomplete="off"
+        class="filters__input"
+      />
+    </label>
+
+    <label class="filters__field">
+      <span class="filters__label">Estado</span>
+      <select [formControl]="statusControl" class="filters__input">
+        <option value="">Todos</option>
+        <option value="ACTIVE">Activa</option>
+        <option value="BLOCKED">Bloqueada</option>
+      </select>
+    </label>
+  </div>
+
+  @if (store.error()) {
+    <div class="alert alert--error" role="alert">{{ store.error() }}</div>
+  }
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="table__avatar-col"></th>
+          <th>Titular</th>
+          <th>N° de cuenta</th>
+          <th>Tier</th>
+          <th class="table__num">Saldo</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody [class.table__body--loading]="store.loading()">
+        @for (account of store.accounts(); track account.id) {
+          <tr>
+            <td class="table__avatar-col">
+              <app-avatar
+                [avatarUrl]="account.owner?.avatarUrl ?? null"
+                [name]="account.owner?.fullName ?? ''"
+              />
+            </td>
+            <td>
+              <span class="holder">{{ account.owner?.fullName }}</span>
+              <span class="holder__doc">{{ account.owner?.documentNumber }}</span>
+            </td>
+            <td class="mono">{{ account.accountNumber }}</td>
+            <td>
+              <span class="badge badge--tier" [attr.data-tier]="account.tier">
+                {{ account.tier }}
+              </span>
+            </td>
+            <td class="table__num mono">
+              {{ account.balance | number: '1.2-2' }}
+            </td>
+            <td>
+              @if (account.status === 'ACTIVE') {
+                <span class="badge badge--active">Activa</span>
+              } @else {
+                <span class="badge badge--blocked">Bloqueada</span>
+              }
+            </td>
+          </tr>
+        } @empty {
+          @if (!store.loading()) {
+            <tr>
+              <td colspan="6" class="table__empty">
+                No hay cuentas que coincidan con el filtro.
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+
+    @if (store.loading()) {
+      <p class="table__loading" role="status">Cargando cuentas…</p>
+    }
+  </div>
+
+  <app-pagination [meta]="store.meta()" (pageChange)="onPageChange($event)" />
+</section>

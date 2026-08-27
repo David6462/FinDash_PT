@@ -1,0 +1,69 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">◈</span>
+      <span class="brand__name">FinDash</span>
+    </div>
+
+    <h1 class="title">Ingresá a tu billetera</h1>
+    <p class="subtitle">Gestión de cuentas y transferencias en un solo lugar.</p>
+
+    @if (errorMessage()) {
+      <div class="alert" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label class="field">
+        <span class="field__label">Número de documento</span>
+        <input
+          type="text"
+          formControlName="documentNumber"
+          autocomplete="username"
+          placeholder="CC-CLIENT-001"
+          [class.field__input--error]="
+            form.controls.documentNumber.touched &&
+            form.controls.documentNumber.invalid
+          "
+          class="field__input"
+        />
+        @if (
+          form.controls.documentNumber.touched &&
+          form.controls.documentNumber.hasError('required')
+        ) {
+          <span class="field__hint">Ingresá tu documento.</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="field__label">Contraseña</span>
+        <input
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+          [class.field__input--error]="
+            form.controls.password.touched && form.controls.password.invalid
+          "
+          class="field__input"
+        />
+        @if (
+          form.controls.password.touched &&
+          form.controls.password.hasError('required')
+        ) {
+          <span class="field__hint">Ingresá tu contraseña.</span>
+        } @else if (
+          form.controls.password.touched &&
+          form.controls.password.hasError('minlength')
+        ) {
+          <span class="field__hint">Mínimo 6 caracteres.</span>
+        }
+      </label>
+
+      <button type="submit" class="submit" [disabled]="loading()">
+        {{ loading() ? 'Ingresando…' : 'Ingresar' }}
+      </button>
+    </form>
+  </div>
+
+  <p class="footnote">FinDash · Panel financiero</p>
+</div>

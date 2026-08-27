@@ -1,0 +1,23 @@
+{
+  // tsconfig usado SOLO por ts-jest para transpilar los specs (unit y e2e).
+  //
+  // Causa raíz del TS5011: el tsconfig.json base activa `declaration: true`
+  // junto con `outDir` pero NO define `rootDir`. Con TypeScript 6 eso dejó de
+  // inferirse en silencio y pasó a ser error duro en cuanto el layout de
+  // salida importa (emisión de .d.ts). `nest build` no lo sufre porque usa
+  // tsconfig.build.json (que fija `rootDir: ./src` y excluye specs), pero
+  // ts-jest carga el tsconfig.json base directamente y ahí revienta.
+  //
+  // Fix: apagar la emisión de tipos (ts-jest no necesita .d.ts) y fijar un
+  // `rootDir` explícito que cubra tanto src/ como test/.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": false,
+    "isolatedModules": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

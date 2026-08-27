@@ -1,0 +1,162 @@
+.movements {
+  max-width: 720px;
+}
+
+.title {
+  margin: 0 0 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.state {
+  color: var(--fd-ink-600);
+  font-size: 0.9rem;
+}
+
+.alert {
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+
+  &--error {
+    background: var(--fd-danger-bg);
+    border: 1px solid var(--fd-danger-border);
+    color: var(--fd-danger);
+  }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.item {
+  background: var(--fd-surface);
+  border: 1px solid var(--fd-border);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+
+  &__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  &__party {
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  &__date {
+    font-size: 0.78rem;
+    color: var(--fd-ink-400);
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    white-space: nowrap;
+  }
+
+  &__fee {
+    font-size: 0.76rem;
+    color: var(--fd-ink-400);
+  }
+
+  &__meta {
+    margin-top: 0.7rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--fd-border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.dir {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  &--out {
+    color: #b45309;
+  }
+  &--in {
+    color: var(--fd-mint-600);
+  }
+  &--unknown {
+    color: var(--fd-ink-400);
+  }
+}
+
+.amount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: 1rem;
+
+  &--out {
+    color: #b45309;
+  }
+  &--in {
+    color: var(--fd-mint-600);
+  }
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  &--ok {
+    background: #e7f8f0;
+    color: var(--fd-mint-600);
+  }
+  &--rejected {
+    background: var(--fd-danger-bg);
+    color: var(--fd-danger);
+  }
+}
+
+.reason {
+  font-size: 0.8rem;
+  color: var(--fd-danger);
+}
+
+.auth {
+  font-size: 0.8rem;
+  color: var(--fd-ink-600);
+
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-weight: 700;
+    color: var(--fd-navy-800);
+  }
+}
+
+@media (max-width: 520px) {
+  .item__main {
+    flex-direction: column;
+  }
+  .item__right {
+    align-items: flex-start;
+  }
+}

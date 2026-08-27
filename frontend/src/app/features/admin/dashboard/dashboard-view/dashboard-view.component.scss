@@ -1,0 +1,125 @@
+.dashboard {
+  display: block;
+}
+
+.title {
+  margin: 0 0 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.alert {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+
+  &--error {
+    background: var(--fd-danger-bg);
+    border: 1px solid var(--fd-danger-border);
+    color: var(--fd-danger);
+  }
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi {
+  background: var(--fd-surface);
+  border: 1px solid var(--fd-border);
+  border-radius: var(--fd-radius);
+  padding: 1.5rem;
+  box-shadow: 0 8px 28px -20px rgba(10, 37, 64, 0.25);
+
+  &__label {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--fd-ink-600);
+  }
+
+  &__value {
+    margin: 0 0 0.4rem;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--fd-navy-800);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__currency {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--fd-ink-400);
+    margin-right: 0.1rem;
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--fd-ink-400);
+  }
+
+  &__skeleton {
+    display: inline-block;
+    width: 8rem;
+    height: 2rem;
+    border-radius: 8px;
+    background: linear-gradient(
+      100deg,
+      var(--fd-border) 30%,
+      #eef2f7 50%,
+      var(--fd-border) 70%
+    );
+    background-size: 200% 100%;
+    animation: kpi-shimmer 1.2s ease-in-out infinite;
+  }
+
+  &--warn {
+    border-color: #f6c99f;
+    background: #fff8f1;
+
+    .kpi__value {
+      color: #b45309;
+    }
+  }
+}
+
+@keyframes kpi-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.panel {
+  background: var(--fd-surface);
+  border: 1px solid var(--fd-border);
+  border-radius: var(--fd-radius);
+  padding: 1.5rem;
+
+  &__title {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  &__state {
+    margin: 0;
+    color: var(--fd-ink-400);
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .kpis {
+    grid-template-columns: 1fr;
+  }
+}

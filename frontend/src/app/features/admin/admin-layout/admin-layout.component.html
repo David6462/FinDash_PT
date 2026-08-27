@@ -1,0 +1,29 @@
+<header class="topbar">
+  <div class="topbar__inner">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">◈</span>
+      <span class="brand__name">FinDash</span>
+      <span class="brand__tag">Admin</span>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/admin/accounts" routerLinkActive="nav__link--active" class="nav__link">
+        Cuentas
+      </a>
+      <a routerLink="/admin/dashboard" routerLinkActive="nav__link--active" class="nav__link">
+        Dashboard
+      </a>
+    </nav>
+
+    <div class="session">
+      <span class="session__user">{{ authStore.user()?.documentNumber }}</span>
+      <button type="button" class="session__logout" (click)="authStore.logout()">
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="content">
+  <router-outlet />
+</main>

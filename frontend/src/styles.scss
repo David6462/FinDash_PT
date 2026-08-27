@@ -1,0 +1,55 @@
+/* ============================================================
+   FinDash — estilos globales
+   Paleta "billetera digital / fintech": azules profundos que
+   transmiten confianza + un verde menta como acento de acción.
+   ============================================================ */
+
+:root {
+  /* Marca */
+  --fd-navy-900: #071a33;
+  --fd-navy-800: #0a2540;
+  --fd-navy-700: #103a63;
+  --fd-blue-500: #1d63d1;
+  --fd-blue-400: #3b82f6;
+
+  /* Acento de acción (verde confianza) */
+  --fd-mint-500: #10b981;
+  --fd-mint-600: #0e9f6e;
+
+  /* Estados */
+  --fd-danger: #dc2626;
+  --fd-danger-bg: #fef2f2;
+  --fd-danger-border: #fecaca;
+
+  /* Superficies y texto */
+  --fd-surface: #ffffff;
+  --fd-bg: #f4f7fb;
+  --fd-ink-900: #0a2540;
+  --fd-ink-600: #47566b;
+  --fd-ink-400: #7b8794;
+  --fd-border: #dfe6ef;
+
+  --fd-radius: 14px;
+  --fd-shadow: 0 18px 48px -12px rgba(10, 37, 64, 0.28);
+
+  --fd-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fd-font);
+  background: var(--fd-bg);
+  color: var(--fd-ink-900);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

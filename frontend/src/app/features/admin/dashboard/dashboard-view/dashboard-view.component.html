@@ -1,0 +1,45 @@
+<section class="dashboard">
+  <h1 class="title">Dashboard</h1>
+
+  @if (store.error()) {
+    <div class="alert alert--error" role="alert">{{ store.error() }}</div>
+  }
+
+  <div class="kpis">
+    <article class="kpi">
+      <p class="kpi__label">Volumen Total Transaccionado</p>
+      <p class="kpi__value">
+        @if (store.kpis(); as k) {
+          <span class="kpi__currency">$</span>{{ k.totalVolumeTransacted | number: '1.2-2' }}
+        } @else {
+          <span class="kpi__skeleton"></span>
+        }
+      </p>
+      <p class="kpi__hint">Suma de transferencias completadas</p>
+    </article>
+
+    <article
+      class="kpi"
+      [class.kpi--warn]="(store.kpis()?.failedTransactionsCount ?? 0) > 0"
+    >
+      <p class="kpi__label">Transacciones Fallidas</p>
+      <p class="kpi__value">
+        @if (store.kpis(); as k) {
+          {{ k.failedTransactionsCount | number }}
+        } @else {
+          <span class="kpi__skeleton"></span>
+        }
+      </p>
+      <p class="kpi__hint">Transferencias rechazadas (fondos, antifraude, etc.)</p>
+    </article>
+  </div>
+
+  <article class="panel">
+    <h2 class="panel__title">Volumen por nivel de cuenta</h2>
+    @if (store.loading() && store.volumeByTier().length === 0) {
+      <p class="panel__state">Cargando gráfico…</p>
+    } @else {
+      <app-volume-chart [volumeByTier]="store.volumeByTier()" />
+    }
+  </article>
+</section>
