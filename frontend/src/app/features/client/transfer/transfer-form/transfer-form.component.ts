@@ -9,6 +9,7 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
+import { AccountStore } from '../../../../core/account/account.store';
 import { maxTwoDecimals } from '../../../../shared/validators/money.validator';
 import { TransferStore } from '../transfer.store';
 
@@ -23,6 +24,7 @@ import { TransferStore } from '../transfer.store';
 export class TransferFormComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   protected readonly store = inject(TransferStore);
+  protected readonly accountStore = inject(AccountStore);
 
   private sub?: Subscription;
 

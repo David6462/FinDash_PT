@@ -62,6 +62,15 @@
     font-size: 0.78rem;
     color: var(--fd-danger);
   }
+
+  &__balance {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--fd-ink-900);
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 .submit {

@@ -3,11 +3,13 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
+import { AccountStore } from '../../../core/account/account.store';
 import { Transaction } from '../../../core/models';
 
 @Injectable({ providedIn: 'root' })
 export class TransferStore {
   private readonly http = inject(HttpClient);
+  private readonly accountStore = inject(AccountStore);
 
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
@@ -57,6 +59,9 @@ export class TransferStore {
           this.loading.set(false);
           // Hubo respuesta → el próximo submit arranca con key nueva.
           this.idempotencyKey = null;
+          // El saldo cambió: refrescamos la cuenta para que la topbar y el
+          // propio formulario lo reflejen sin recargar la página.
+          this.accountStore.refresh().subscribe();
         }),
         catchError((err: HttpErrorResponse) => {
           this.loading.set(false);

@@ -26,6 +26,11 @@
 
     <label class="field">
       <span class="field__label">Monto</span>
+      @if (accountStore.myAccount(); as account) {
+        <span class="field__balance">
+          Saldo disponible: ${{ account.balance | number: '1.2-2' }}
+        </span>
+      }
       <input
         type="number"
         step="0.01"
