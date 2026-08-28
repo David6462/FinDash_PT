@@ -11,7 +11,17 @@ export function buildTypeOrmOptions(
 ): TypeOrmModuleOptions {
   return {
     type: 'postgres',
+
+    // DB_HOST se pasa TAL CUAL al driver `pg`, sin validación ni transformación:
+    //  - desarrollo local: un host de red normal ("localhost", una IP, etc.).
+    //  - Cloud Run + Cloud SQL: un socket Unix, p. ej.
+    //    "/cloudsql/findash-pt:us-central1:findash-db". `pg` detecta el "/"
+    //    inicial y conecta por socket (`<host>/.s.PGSQL.<port>`), ignorando el
+    //    host de red. Por eso NO agregar aquí ninguna validación de formato de IP.
     host: config.get<string>('DB_HOST'),
+    // Con socket Unix el puerto solo forma parte del nombre del archivo del
+    // socket; 5432 (el default de Cloud SQL) es el valor correcto y DB_PORT
+    // puede quedar sin definir.
     port: Number(config.get<string>('DB_PORT') ?? 5432),
     username: config.get<string>('DB_USER'),
     password: config.get<string>('DB_PASSWORD'),

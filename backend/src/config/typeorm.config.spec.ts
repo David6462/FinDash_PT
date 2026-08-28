@@ -35,4 +35,14 @@ describe('buildTypeOrmOptions', () => {
 
     expect(options.port).toBe(5432);
   });
+
+  it('pasa un socket Unix de Cloud SQL como host sin transformarlo (Cloud Run)', () => {
+    const socket = '/cloudsql/findash-pt:us-central1:findash-db';
+    const options = buildTypeOrmOptions(
+      configWith({ DB_HOST: socket, DB_USER: 'findash', DB_NAME: 'findash' }),
+    ) as { host: string; port: number };
+
+    expect(options.host).toBe(socket);
+    expect(options.port).toBe(5432);
+  });
 });
