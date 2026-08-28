@@ -36,7 +36,9 @@
               >
                 {{ direction(tx) === 'out' ? '−' : direction(tx) === 'in' ? '+' : '' }}{{ tx.amount | number: '1.2-2' }}
               </span>
-              <span class="item__fee">Comisión {{ tx.commissionCharged | number: '1.2-2' }}</span>
+              @if (direction(tx) === 'out') {
+                <span class="item__fee">Comisión {{ tx.commissionCharged | number: '1.2-2' }}</span>
+              }
             </div>
           </div>
 
