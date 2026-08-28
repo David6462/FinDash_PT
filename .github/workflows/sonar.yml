@@ -64,7 +64,7 @@ jobs:
         run: npm run test:cov:all
 
       - name: SonarCloud scan
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@v6
         with:
           # sonar-project.properties vive en backend/, así que el scanner debe
           # tomar ese directorio como base del proyecto.
