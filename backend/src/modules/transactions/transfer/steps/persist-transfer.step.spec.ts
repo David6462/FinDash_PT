@@ -2,7 +2,6 @@ import { jest } from '@jest/globals';
 import { Decimal } from 'decimal.js';
 import { TransactionStatus } from '../../../../common/enums/index.js';
 import { Account } from '../../../accounts/entities/account.entity.js';
-import { Transaction } from '../../entities/transaction.entity.js';
 import { InsufficientFundsException } from '../../exceptions/index.js';
 import { PersistTransferStep } from './persist-transfer.step.js';
 import type { TransferContext } from '../transfer-context.interface.js';

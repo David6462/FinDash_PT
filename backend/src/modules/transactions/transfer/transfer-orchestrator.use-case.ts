@@ -68,10 +68,13 @@ export class TransferOrchestratorUseCase {
 
     try {
       await this.loadAndValidateAccountsStep.execute(context);
-      await this.calculateCommissionStep.execute(context);
-      await this.validateFundsStep.execute(context);
+      // Estos tres pasos son sincrónicos (cálculo puro / validación en memoria):
+      // devuelven void, no Promise, así que no se awaitean. Un throw de ellos
+      // igual lo captura este try/catch.
+      this.calculateCommissionStep.execute(context);
+      this.validateFundsStep.execute(context);
       await this.fraudCheckStep.execute(context);
-      await this.generateAuthorizationCodeStep.execute(context);
+      this.generateAuthorizationCodeStep.execute(context);
       return await this.persistTransferStep.execute(context);
     } catch (error) {
       if (isTransferDomainException(error)) {

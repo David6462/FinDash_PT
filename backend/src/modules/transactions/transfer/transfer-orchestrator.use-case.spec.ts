@@ -114,7 +114,9 @@ describe('TransferOrchestratorUseCase', () => {
 
   it('si un paso intermedio lanza, no ejecuta los siguientes', async () => {
     const { orchestrator, calls, steps } = buildOrchestrator();
-    steps.validateFundsStep.execute.mockImplementation(async () => {
+    // ValidateFundsStep es sincrónico: el mock también, para que el throw se
+    // propague igual que en producción (no como promise rechazada suelta).
+    steps.validateFundsStep.execute.mockImplementation(() => {
       calls.push('validateFunds');
       throw new InsufficientFundsException();
     });
@@ -135,7 +137,7 @@ describe('TransferOrchestratorUseCase', () => {
 
   it('ante una excepción de dominio: persiste una Transaction REJECTED con el rejectionReason y re-lanza', async () => {
     const { orchestrator, transactions, steps } = buildOrchestrator();
-    steps.validateFundsStep.execute.mockImplementation(async () => {
+    steps.validateFundsStep.execute.mockImplementation(() => {
       throw new InsufficientFundsException();
     });
 
@@ -195,7 +197,7 @@ describe('TransferOrchestratorUseCase', () => {
     'si el INSERT de la REJECTED falla por %s, NO enmascara la excepción de dominio original',
     async (_label, saveError) => {
       const { orchestrator, transactions, steps } = buildOrchestrator();
-      steps.validateFundsStep.execute.mockImplementation(async () => {
+      steps.validateFundsStep.execute.mockImplementation(() => {
         throw new InsufficientFundsException();
       });
       transactions.save.mockRejectedValue(saveError);

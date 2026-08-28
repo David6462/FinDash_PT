@@ -25,7 +25,18 @@ export class PersistTransferStep {
     // Orden consistente de adquisición de locks: si dos transferencias cruzadas
     // (A->B y B->A) compiten por las mismas dos cuentas, ambas las bloquean en
     // el mismo orden y no hay deadlock.
-    const lockOrder = [sourceId, destinationId].sort();
+    //
+    // Los id son UUID (string). Comparador relacional puro (por code units), NO
+    // localeCompare: el orden tiene que ser idéntico corra donde corra el proceso
+    // (local, CI, contenedor de Cloud Run). localeCompare depende del locale /
+    // versión de ICU / Node del entorno; la comparación relacional de strings
+    // está fijada por el estándar de JS y no lee ningún dato de configuración.
+    // Es un invariante de seguridad de concurrencia: debe sostenerse siempre.
+    // (Sonar S2871 exige comparador explícito; un .sort() a secas también ordena
+    // por string pero de forma implícita.)
+    const lockOrder = [sourceId, destinationId].sort((a, b) =>
+      a < b ? -1 : a > b ? 1 : 0,
+    );
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
