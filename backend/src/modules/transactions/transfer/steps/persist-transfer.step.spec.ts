@@ -167,6 +167,21 @@ describe('PersistTransferStep', () => {
     expect(m.queryRunner.release).toHaveBeenCalledTimes(1);
   });
 
+  it('ante violación de UNIQUE pero SIN Transaction ganadora encontrada: rollback y re-lanza el error original', async () => {
+    const uniqueError = { code: '23505' };
+    const m = buildMocks({
+      txSaveError: uniqueError,
+      // winnerTransaction ausente -> outerTransactionsRepo.findOne devuelve null
+    });
+    const step = new PersistTransferStep(m.dataSource as never);
+
+    await expect(step.execute(context())).rejects.toBe(uniqueError);
+    expect(m.outerTransactionsRepo.findOne).toHaveBeenCalledTimes(1);
+    expect(m.queryRunner.rollbackTransaction).toHaveBeenCalledTimes(1);
+    expect(m.queryRunner.commitTransaction).not.toHaveBeenCalled();
+    expect(m.queryRunner.release).toHaveBeenCalledTimes(1);
+  });
+
   it('propaga el error si NO es una violación de UNIQUE', async () => {
     const m = buildMocks({ txSaveError: new Error('boom') });
     const step = new PersistTransferStep(m.dataSource as never);
